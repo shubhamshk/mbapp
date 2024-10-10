@@ -1,24 +1,30 @@
 "use client"
 import axios from 'axios'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
 export default  function VerifyEmail() {
-  // const router = useRouter()
   const[token , setToken] = useState("") 
   const[verified , setVerified] = useState(false)
-  const[error,setError] = useState(false)
+
 
   const verifyUserEmail = async () =>{
     try {
       await axios.post("/api/users/verifyemail",
         {token})
         setVerified(true)
-    } catch (error :any) {
-      setError(true)
-      console.log(error.response.data)
-      
+    } catch (error: unknown) { // Set error as `unknown` type
+      // Check if error is an instance of AxiosError
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "An unexpected error occurred";
+        console.log("Login failed", message);
+        toast.error(message);
+      } else {
+        // Handle non-Axios errors
+        console.log("Login failed", error);
+        toast.error("An unexpected error occurred");
+      }
     }
   }
 

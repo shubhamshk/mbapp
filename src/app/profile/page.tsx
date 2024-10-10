@@ -20,10 +20,19 @@ export default function Profilepage() {
             await axios.get('/api/users/logout')
             toast.success("Logout successful")
             router.push("/login")  // Now this will work
-        } catch (error: any) {
-            console.log(error.message)
-            toast.error(error.message)
-        }
+            console.log(getUserDetails);
+        } catch (error: unknown) { // Set error as `unknown` type
+            // Check if error is an instance of AxiosError
+            if (axios.isAxiosError(error)) {
+              const message = error.response?.data?.message || "An unexpected error occurred";
+              console.log("Login failed", message);
+              toast.error(message);
+            } else {
+              // Handle non-Axios errors
+              console.log("Login failed", error);
+              toast.error("An unexpected error occurred");
+            }
+          }
     }
 
     return (

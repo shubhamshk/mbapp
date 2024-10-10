@@ -1,7 +1,7 @@
 // components/Footer.tsx
 import React from 'react';
 import { AiOutlineHome, AiOutlineProfile } from 'react-icons/ai';
-import { MdLocationOn, MdLocalOffer } from 'react-icons/md';
+import { MdLocalOffer } from 'react-icons/md';
 
 const Footer = () => {
     return (
