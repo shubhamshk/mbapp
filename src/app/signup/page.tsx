@@ -20,12 +20,20 @@ export default function SignupPage() {
     try {
       setLoading(true)
       const response = axios.post("/api/users/signup" , user)
-      console.log("Signup success" , response.data);
+      console.log("Signup success" , (await response).data);
       router.push('/login')
 
-    } catch (error:any) {
-      console.log("Signup failed")
-      toast.error(error.message)
+    } catch (error: unknown) { // Set error as `unknown` type
+      // Check if error is an instance of AxiosError
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "An unexpected error occurred";
+        console.log("Login failed", message);
+        toast.error(message);
+      } else {
+        // Handle non-Axios errors
+        console.log("Login failed", error);
+        toast.error("An unexpected error occurred");
+      }
     }
   }
 
